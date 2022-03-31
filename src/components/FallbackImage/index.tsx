@@ -13,6 +13,8 @@ type FallbackImageProps = {
   loaderStyle?: StyleProp<any>;
 };
 
+//* Download image with loader */
+
 const FallbackImage = ({
   uri,
   imageStyle,
