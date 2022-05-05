@@ -2,13 +2,15 @@
 import 'react-native-reanimated';
 import React from 'react';
 import { StatusBar, useColorScheme } from 'react-native';
-
-// import styled from 'styled-components/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import styled from 'styled-components/native';
 
 // import { Colors } from 'react-native/Libraries/NewAppScreen';
 // import FallbackImage from './src/components/FallbackImage';
 // import FadeComponent from './src/components/Animations/FadeComponent';
-import ScrollAnimatedList from './src/components/Animations/ScrollAnimatedList';
+// import ScrollAnimatedList from './src/components/Animations/ScrollAnimatedList';
+// import VisibleComponent from './src/components/Animations/Shape';
+// import BottomSheet from './src/components/BottomSheet/BottomSheet';
 
 // const imageUri = [
 //   'https://reactnative.dev/img/tiny_logo.png',
@@ -19,24 +21,33 @@ const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaContainer>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-      {/* <ViewContainer isOneItem={imageUri.length === 1}>
-        {imageUri.map((item, index) => (
-          <FallbackImage uri={item} key={index} />
-        ))}
-      </ViewContainer> */}
+        {/* <ImageContainer isOneItem={imageUri.length === 1}>
+          {imageUri.map((item, index) => (
+            <FallbackImage uri={item} key={index} />
+          ))}
+        </ImageContainer> */}
 
-      {/* <FadeComponent /> */}
+        {/* <ScrollAnimatedList /> */}
 
-      <ScrollAnimatedList />
-    </>
+        {/* <FadeComponent /> */}
+
+        {/* <BottomSheet /> */}
+
+        {/* <VisibleComponent /> */}
+      </SafeAreaContainer>
+    </GestureHandlerRootView>
   );
 };
 
-// const ViewContainer = styled.View<{ isOneItem: boolean }>`
-//   flex: 1;
+const SafeAreaContainer = styled.SafeAreaView`
+  flex: 1;
+`;
+
+// const ImageContainer = styled.View<{ isOneItem: boolean }>`
 //   flex-direction: row;
 //   flex-wrap: wrap;
 //   justify-content: ${props =>
