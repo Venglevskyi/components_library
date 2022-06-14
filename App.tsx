@@ -1,16 +1,18 @@
 // App.js
-import 'react-native-reanimated';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
 // import { Colors } from 'react-native/Libraries/NewAppScreen';
-// import FallbackImage from './src/components/FallbackImage';
-// import FadeComponent from './src/components/Animations/FadeComponent';
-// import ScrollAnimatedList from './src/components/Animations/ScrollAnimatedList';
-// import VisibleComponent from './src/components/Animations/Shape';
-// import BottomSheet from './src/components/BottomSheet/BottomSheet';
+// import FallbackImage from 'components/FallbackImage';
+// import FadeComponent from 'components/Animations/FadeComponent';
+// import ScrollAnimatedList from 'components/Animations/ScrollAnimatedList';
+// import VisibleComponent from 'components/Animations/Shape';
+// import BottomSheet from 'components/BottomSheet/BottomSheet';
+// import CameraService from 'components/CameraService/CameraService';
+import BottomTabs from 'components/MaterialBottomTab/MaterialBottomTab';
+import { requestPermissions } from 'helpers/permissions';
 
 // const imageUri = [
 //   'https://reactnative.dev/img/tiny_logo.png',
@@ -19,6 +21,10 @@ import styled from 'styled-components/native';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+
+  useEffect(() => {
+    requestPermissions();
+  }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -38,6 +44,10 @@ const App = () => {
         {/* <BottomSheet /> */}
 
         {/* <VisibleComponent /> */}
+
+        {/* <CameraService /> */}
+
+        <BottomTabs />
       </SafeAreaContainer>
     </GestureHandlerRootView>
   );
