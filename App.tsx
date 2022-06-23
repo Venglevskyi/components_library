@@ -28,34 +28,32 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaContainer>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <SafeAreaContainer />
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-        {/* <ImageContainer isOneItem={imageUri.length === 1}>
+      {/* <ImageContainer isOneItem={imageUri.length === 1}>
           {imageUri.map((item, index) => (
             <FallbackImage uri={item} key={index} />
           ))}
         </ImageContainer> */}
 
-        {/* <ScrollAnimatedList /> */}
+      {/* <ScrollAnimatedList /> */}
 
-        {/* <FadeComponent /> */}
+      {/* <FadeComponent /> */}
 
-        {/* <BottomSheet /> */}
+      {/* <BottomSheet /> */}
 
-        {/* <VisibleComponent /> */}
+      {/* <VisibleComponent /> */}
 
-        {/* <CameraService /> */}
+      {/* <CameraService /> */}
 
-        <BottomTabs />
-      </SafeAreaContainer>
+      <BottomTabs />
+      <SafeAreaContainer style={{ backgroundColor: 'black' }} />
     </GestureHandlerRootView>
   );
 };
 
-const SafeAreaContainer = styled.SafeAreaView`
-  flex: 1;
-`;
+const SafeAreaContainer = styled.SafeAreaView``;
 
 // const ImageContainer = styled.View<{ isOneItem: boolean }>`
 //   flex-direction: row;

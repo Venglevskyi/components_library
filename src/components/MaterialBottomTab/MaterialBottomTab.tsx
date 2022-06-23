@@ -3,19 +3,38 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { TextInput, Button } from 'react-native-paper';
+
+import Section from 'components/Section/Section';
 
 const Tab = createMaterialBottomTabNavigator();
 
-const Feed = () => (
-  <View style={{ flex: 1 }}>
-    <Text>Feed</Text>
-  </View>
-);
+const Feed = () => {
+  const [text, setText] = React.useState('');
+  return (
+    <Section isScrolled>
+      <View style={{ height: 500, width: '100%', backgroundColor: 'yellow' }}>
+        <Text>Some content</Text>
+      </View>
+      <TextInput
+        label="Email"
+        value={text}
+        onChangeText={text => setText(text)}
+      />
+      <Button
+        icon="camera"
+        mode="contained"
+        onPress={() => console.log('Pressed')}>
+        Press me
+      </Button>
+    </Section>
+  );
+};
 
 const Notifications = () => (
-  <View style={{ flex: 1 }}>
+  <Section isScrolled centerContentHorizontally withHeader>
     <Text>Notifications</Text>
-  </View>
+  </Section>
 );
 
 const Profile = () => (
@@ -29,10 +48,8 @@ const BottomTabs = () => {
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Feed"
-        // renderTouchable={}
         activeColor="#e91e"
         barStyle={{ backgroundColor: 'black' }}
-        style={{ borderTopLeftRadius: 12 }}
         shifting>
         <Tab.Screen
           name="Feed"
@@ -49,6 +66,7 @@ const BottomTabs = () => {
           component={Notifications}
           options={{
             tabBarLabel: 'Notifications',
+            tabBarBadge: 2,
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="bell" color={color} size={26} />
             ),
