@@ -32,10 +32,10 @@ const App = () => {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
       {/* <ImageContainer isOneItem={imageUri.length === 1}>
-          {imageUri.map((item, index) => (
-            <FallbackImage uri={item} key={index} />
-          ))}
-        </ImageContainer> */}
+        {imageUri.map((item, index) => (
+          <FallbackImage uri={item} key={index} />
+        ))}
+      </ImageContainer> */}
 
       {/* <ScrollAnimatedList /> */}
 

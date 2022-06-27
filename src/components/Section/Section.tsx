@@ -9,6 +9,7 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Reanimated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 import { DEVICE_HEIGHT, IS_IOS, STATUS_BAR } from 'helpers/constants';
@@ -43,6 +44,7 @@ type SectionProps = {
   disableStyles?: boolean;
   scrollEnabled?: boolean;
   withBottomTab?: boolean;
+  isStickyHeader?: boolean;
   children: React.ReactNode;
   offsetHorizontal?: boolean;
   centerContentVertically?: boolean;
@@ -80,6 +82,7 @@ const Section = ({
   flexCount = 1,
   offsetTop = 0,
   clientTop = 0,
+  isStickyHeader,
   justifyContent,
   controlRefresh,
   clientLeft = 0,
@@ -96,29 +99,37 @@ const Section = ({
   bgColor = '#ADD8E6',
   safeAreaBg = 'white',
   showsVerticalScrollIndicator = false,
-}: SectionProps) => (
-  <View
-    style={
-      disableStyles
-        ? {}
-        : {
-            flex: flexCount,
-            backgroundColor: bgColor,
+}: SectionProps) => {
+  return (
+    <View
+      style={
+        disableStyles
+          ? {}
+          : {
+              flex: flexCount,
+              // backgroundColor: bgColor,
 
-            //? can add different style for wrapper
-          }
-    }>
-    {isScrolled ? (
-      <View>
-        <KeyboardAwareScrollView
+              //? can add different style for wrapper
+            }
+      }>
+      {isScrolled ? (
+        <ReanimatedHeaderComponent
           ref={scrollRef}
           bounces={false}
           enableOnAndroid
           nestedScrollEnabled={true}
           removeClippedSubviews={false}
           scrollEnabled={scrollEnabled}
-          showsVerticalScrollIndicator={showsVerticalScrollIndicator}
-          refreshControl={controlRefresh}>
+          refreshControl={controlRefresh}
+          stickyHeaderIndices={isStickyHeader ? [0] : undefined}
+          showsVerticalScrollIndicator={showsVerticalScrollIndicator}>
+          {withHeader && (
+            <HeaderContainer withShadow={withShadow}>
+              <Icon name="arrow-left" size={24} color="#36303F" />
+              <Text>Notification</Text>
+              <Icon name="calendar-week" size={24} color="#36303F" />
+            </HeaderContainer>
+          )}
           <ChildContainer
             width={width}
             height={height}
@@ -152,78 +163,58 @@ const Section = ({
                 }}
               />
             )}
-            {withHeader && (
-              <HeaderContainer>
-                <Icon name="arrow-left" size={24} color="#36303F" />
-                <Text>Notification</Text>
-                <Icon name="calendar-week" size={24} color="#36303F" />
-              </HeaderContainer>
-            )}
-
             {children}
           </ChildContainer>
-        </KeyboardAwareScrollView>
-      </View>
-    ) : (
-      <ChildContainer
-        width={width}
-        height={height}
-        bgColor={bgColor}
-        minHeight={minHeight}
-        offsetTop={offsetTop}
-        height100={height100}
-        clientTop={clientTop}
-        fullWidth={fullWidth}
-        withShadow={withShadow}
-        fullHeight={fullHeight}
-        offsetLeft={offsetLeft}
-        clientLeft={clientLeft}
-        offsetRight={offsetRight}
-        contentWrap={contentWrap}
-        clientRight={clientRight}
-        borderRadius={borderRadius}
-        rowDirection={rowDirection}
-        offsetBottom={offsetBottom}
-        clientBottom={clientBottom}
-        absoluteFill={absoluteFill}
-        withBottomTab={withBottomTab}
-        justifyContent={justifyContent}
-        offsetHorizontal={offsetHorizontal}
-        centerContentVertically={centerContentVertically}
-        centerContentHorizontally={centerContentHorizontally}
-        style={
-          withShadow && {
-            elevation: 2,
-            shadowRadius: 2.22,
-            shadowColor: '#000',
-            shadowOpacity: 0.22,
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-          }
-        }>
-        {hiddenBar && <StatusBar hidden />}
-        {withSafeArea && (
-          <SafeAreaView
-            edges={['top']}
-            style={{
-              backgroundColor: safeAreaBg,
-            }}
-          />
-        )}
-        {withHeader && (
-          <HeaderContainer>
-            <Icon name="arrow-left" size={24} color="#36303F" />
-            <Text>Notification</Text>
-            <Icon name="calendar-week" size={24} color="#36303F" />
-          </HeaderContainer>
-        )}
-        {children}
-      </ChildContainer>
-    )}
-  </View>
-);
+        </ReanimatedHeaderComponent>
+      ) : (
+        <ChildContainer
+          width={width}
+          height={height}
+          bgColor={bgColor}
+          minHeight={minHeight}
+          offsetTop={offsetTop}
+          height100={height100}
+          clientTop={clientTop}
+          fullWidth={fullWidth}
+          withShadow={withShadow}
+          fullHeight={fullHeight}
+          offsetLeft={offsetLeft}
+          clientLeft={clientLeft}
+          offsetRight={offsetRight}
+          contentWrap={contentWrap}
+          clientRight={clientRight}
+          borderRadius={borderRadius}
+          rowDirection={rowDirection}
+          offsetBottom={offsetBottom}
+          clientBottom={clientBottom}
+          absoluteFill={absoluteFill}
+          withBottomTab={withBottomTab}
+          justifyContent={justifyContent}
+          offsetHorizontal={offsetHorizontal}
+          centerContentVertically={centerContentVertically}
+          centerContentHorizontally={centerContentHorizontally}>
+          {hiddenBar && <StatusBar hidden />}
+          {withSafeArea && (
+            <SafeAreaView
+              edges={['top']}
+              style={{
+                backgroundColor: safeAreaBg,
+              }}
+            />
+          )}
+          {withHeader && (
+            <HeaderContainer withShadow={withShadow}>
+              <Icon name="arrow-left" size={24} color="#36303F" />
+              <Text>Notification</Text>
+              <Icon name="calendar-week" size={24} color="#36303F" />
+            </HeaderContainer>
+          )}
+          {children}
+        </ChildContainer>
+      )}
+    </View>
+  );
+};
 
 const ChildContainer = styled.View<SectionProps>`
   margin-top: ${props => props.offsetTop}px;
@@ -258,7 +249,7 @@ const ChildContainer = styled.View<SectionProps>`
   `};
 `;
 
-const HeaderContainer = styled.View`
+const HeaderContainer = styled.View<{ withShadow: boolean | undefined }>`
   width: 100%;
   height: 50px;
   flex-direction: row;
@@ -266,6 +257,18 @@ const HeaderContainer = styled.View`
   justify-content: space-between;
   padding-horizontal: 12px;
   background-color: white;
+  ${props =>
+    props.withShadow &&
+    `elevation: 10;
+    shadow-radius: 8px;
+    shadow-color: '#000';
+    shadow-opacity: 0.3;
+    shadow-offset: 0px 2.22px;
+    z-index: 2;`};
 `;
+
+const ReanimatedHeaderComponent = Reanimated.createAnimatedComponent(
+  KeyboardAwareScrollView,
+);
 
 export default Section;

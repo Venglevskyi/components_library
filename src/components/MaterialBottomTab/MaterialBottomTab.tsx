@@ -19,7 +19,7 @@ const Feed = () => {
       <TextInput
         label="Email"
         value={text}
-        onChangeText={text => setText(text)}
+        onChangeText={txt => setText(txt)}
       />
       <Button
         icon="camera"
@@ -32,8 +32,26 @@ const Feed = () => {
 };
 
 const Notifications = () => (
-  <Section isScrolled centerContentHorizontally withHeader>
+  <Section
+    isScrolled
+    centerContentHorizontally
+    withHeader
+    withShadow
+    isStickyHeader>
     <Text>Notifications</Text>
+    <View
+      style={{
+        width: 100,
+        height: 700,
+        backgroundColor: 'white',
+      }}
+    />
+    <Button
+      icon="camera"
+      mode="contained"
+      onPress={() => console.log('Pressed')}>
+      Press me
+    </Button>
   </Section>
 );
 

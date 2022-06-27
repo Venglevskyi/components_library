@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { StyleProp, ActivityIndicator } from 'react-native';
+import Reanimated, {
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 type FallbackImageProps = {
@@ -17,21 +21,25 @@ type FallbackImageProps = {
 
 const FallbackImage = ({
   uri,
-  imageStyle,
   loaderStyle,
   borderRadius,
-  width = 40,
-  height = 40,
+  width = 100,
+  height = 100,
   withOutBorder = false,
 }: FallbackImageProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(isLoading ? 0 : 1, { duration: 300 }),
+    transform: [{ scale: withTiming(isLoading ? 0.7 : 1, { duration: 300 }) }],
+  }));
+
   return (
-    <Icon
+    <ReanimatedComponent
       width={width}
       height={height}
       source={{ uri }}
-      style={imageStyle}
+      style={[animatedStyle]}
       borderRadius={borderRadius}
       withOutBorder={withOutBorder}
       onLoadEnd={() => setIsLoading(false)}>
@@ -40,7 +48,7 @@ const FallbackImage = ({
           <ActivityIndicator color="#ffe100" />
         </LoaderContainer>
       )}
-    </Icon>
+    </ReanimatedComponent>
   );
 };
 
@@ -57,6 +65,8 @@ const Icon = styled.ImageBackground<{
   align-items: center;
   justify-content: center;
 `;
+
+const ReanimatedComponent = Reanimated.createAnimatedComponent(Icon);
 
 const LoaderContainer = styled.View`
   position: absolute;
