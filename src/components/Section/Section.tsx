@@ -9,7 +9,6 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Reanimated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 import { DEVICE_HEIGHT, IS_IOS, STATUS_BAR } from 'helpers/constants';
@@ -50,6 +49,7 @@ type SectionProps = {
   centerContentVertically?: boolean;
   centerContentHorizontally?: boolean;
   showsVerticalScrollIndicator?: boolean;
+  setIsAnimatedHeader?: (value: boolean) => void | undefined;
   scrollRef?: RefObject<KeyboardAwareScrollView>;
   justifyContent?: 'space-evenly' | 'space-between';
   controlRefresh?: React.ReactElement<
@@ -92,6 +92,7 @@ const Section = ({
   offsetBottom = 0,
   clientBottom = 0,
   offsetHorizontal,
+  setIsAnimatedHeader,
   scrollEnabled = true,
   disableStyles = false,
   centerContentVertically,
@@ -100,6 +101,25 @@ const Section = ({
   safeAreaBg = 'white',
   showsVerticalScrollIndicator = false,
 }: SectionProps) => {
+  const scrollPosition = React.useRef(0);
+
+  const onScroll = (event: any) => {
+    const scrollY = event.nativeEvent.contentOffset.y;
+    const isActive = scrollY > 50;
+    const inActive = scrollPosition.current > scrollY;
+
+    if (isActive && setIsAnimatedHeader) {
+      setIsAnimatedHeader(true);
+    }
+    if (inActive && setIsAnimatedHeader) {
+      setIsAnimatedHeader(false);
+    }
+  };
+
+  const setCurrentPosition = (e: any) => {
+    scrollPosition.current = e.nativeEvent.contentOffset.y;
+  };
+
   return (
     <View
       style={
@@ -108,19 +128,21 @@ const Section = ({
           : {
               flex: flexCount,
               // backgroundColor: bgColor,
-
               //? can add different style for wrapper
             }
       }>
       {isScrolled ? (
-        <ReanimatedHeaderComponent
+        <KeyboardAwareScrollView
           ref={scrollRef}
           bounces={false}
           enableOnAndroid
+          onScroll={onScroll}
+          scrollEventThrottle={16}
           nestedScrollEnabled={true}
           removeClippedSubviews={false}
           scrollEnabled={scrollEnabled}
           refreshControl={controlRefresh}
+          onScrollEndDrag={setCurrentPosition}
           stickyHeaderIndices={isStickyHeader ? [0] : undefined}
           showsVerticalScrollIndicator={showsVerticalScrollIndicator}>
           {withHeader && (
@@ -163,9 +185,10 @@ const Section = ({
                 }}
               />
             )}
+
             {children}
           </ChildContainer>
-        </ReanimatedHeaderComponent>
+        </KeyboardAwareScrollView>
       ) : (
         <ChildContainer
           width={width}
@@ -266,9 +289,5 @@ const HeaderContainer = styled.View<{ withShadow: boolean | undefined }>`
     shadow-offset: 0px 2.22px;
     z-index: 2;`};
 `;
-
-const ReanimatedHeaderComponent = Reanimated.createAnimatedComponent(
-  KeyboardAwareScrollView,
-);
 
 export default Section;

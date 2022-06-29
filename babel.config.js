@@ -24,6 +24,7 @@ module.exports = {
         alias: {
           components: './src/components',
           helpers: './src/helpers',
+          views: './src/views',
         },
       },
     ],
