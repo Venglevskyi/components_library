@@ -5,6 +5,8 @@ import {
   StyleSheet,
   View,
   Text,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -103,7 +105,7 @@ const Section = ({
 }: SectionProps) => {
   const scrollPosition = React.useRef(0);
 
-  const onScroll = (event: any) => {
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollY = event.nativeEvent.contentOffset.y;
     const isActive = scrollY > 50;
     const inActive = scrollPosition.current > scrollY;
@@ -116,8 +118,10 @@ const Section = ({
     }
   };
 
-  const setCurrentPosition = (e: any) => {
-    scrollPosition.current = e.nativeEvent.contentOffset.y;
+  const setCurrentPosition = (
+    event: NativeSyntheticEvent<NativeScrollEvent>,
+  ) => {
+    scrollPosition.current = event.nativeEvent.contentOffset.y;
   };
 
   return (

@@ -31,6 +31,13 @@ const App = () => {
       <SafeAreaContainer />
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
+      {/* <Image
+        source={{ uri: imageUri[0] }}
+        key={'index'}
+        testID={'react image'}
+        style={{ width: 100, height: 100 }}
+      /> */}
+
       {/* <ImageContainer isOneItem={imageUri.length === 1}>
         {imageUri.map((item, index) => (
           <FallbackImage uri={item} key={index} />

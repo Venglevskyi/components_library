@@ -6,6 +6,7 @@ import Section from 'components/Section/Section';
 
 const Feed = () => {
   const [text, setText] = React.useState('');
+
   return (
     <Section isScrolled>
       <ContentContainer>

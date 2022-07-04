@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Feed from 'views/Feed';
 import Notifications from 'views/Notification';
 import Profile from 'views/Camera';
+import SnapGallery from 'components/SnapGallery/SnapGallery';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -14,13 +15,13 @@ const BottomTabs = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Feed"
+        shifting
+        // initialRouteName="Feed"
         activeColor="#e91e"
-        barStyle={{ backgroundColor: 'black' }}
-        shifting>
+        barStyle={{ backgroundColor: 'black' }}>
         <Tab.Screen
           name="Feed"
-          component={Feed}
+          component={SnapGallery}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color }) => (
