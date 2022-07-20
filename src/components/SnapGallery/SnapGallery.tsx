@@ -19,8 +19,8 @@ const SnapGallery = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const request = async () => {
-    const gallery = await getImages();
-    setImages(gallery);
+    const { hits } = await getImages();
+    setImages(hits);
   };
 
   const renderItem = ({ item, index }: ImageProps) => {

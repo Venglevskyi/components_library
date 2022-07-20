@@ -1,19 +1,21 @@
 import React, { useRef } from 'react';
-import { ActivityIndicator, Pressable, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
 
+// import { scanQRCodes } from 'helpers/functions';
+
 const CameraService = () => {
-  const camera = useRef<Camera>();
+  const camera = useRef<Camera>(null);
   const devices = useCameraDevices();
   const device = devices.back;
+  const isFocused = useIsFocused();
 
   const makePhoto = async () => {
     try {
-      const photo = await camera.current.takePhoto({
-        flash: 'on',
-      });
-      console.log(photo.path);
+      const photo = await camera?.current?.takePhoto();
+      console.log(photo?.path);
     } catch (e) {}
   };
 
@@ -29,8 +31,8 @@ const CameraService = () => {
             ref={camera}
             photo={true}
             device={device}
-            isActive={true}
             style={{ flex: 1 }}
+            isActive={isFocused}
           />
           <ButtonContainer onPress={makePhoto}>
             <SnapButton />

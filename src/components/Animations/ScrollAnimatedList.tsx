@@ -1,10 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Dimensions, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MotiView } from 'moti';
 import { faker } from '@faker-js/faker';
 import styled from 'styled-components/native';
-
-import { Dimensions, FlatList, TouchableOpacity } from 'react-native';
 
 const { width } = Dimensions.get('screen');
 
@@ -41,6 +40,20 @@ const ScrollAnimatedList = () => {
     setItemIndex(itemIndex - 1);
   };
 
+  const _renderItem = (item: { job: string }, index: number) => (
+    <TouchableOpacity onPress={() => setItemIndex(index)}>
+      <MotiViewContainer
+        animate={{
+          backgroundColor:
+            index === itemIndex ? _colors.active : _colors.inactive,
+          opacity: itemIndex === index ? 1 : 0.6,
+        }}
+        transition={{ type: 'timing', duration: 500 }}>
+        <TextWrapper>{item.job}</TextWrapper>
+      </MotiViewContainer>
+    </TouchableOpacity>
+  );
+
   useEffect(() => {
     ref.current?.scrollToIndex({
       index: itemIndex,
@@ -61,29 +74,7 @@ const ScrollAnimatedList = () => {
         keyExtractor={item => item.key}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingLeft: _spacing }}
-        renderItem={({ item, index }) => {
-          return (
-            <TouchableOpacity onPress={() => setItemIndex(index)}>
-              <MotiView
-                animate={{
-                  backgroundColor:
-                    index === itemIndex ? _colors.active : _colors.inactive,
-                  opacity: itemIndex === index ? 1 : 0.6,
-                }}
-                transition={{ type: 'timing', duration: 500 }}
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  marginRight: _spacing,
-                  padding: _spacing,
-                  borderWidth: 2,
-                  borderColor: _colors.active,
-                  borderRadius: 12,
-                }}>
-                <TextWrapper>{item.job}</TextWrapper>
-              </MotiView>
-            </TouchableOpacity>
-          );
-        }}
+        renderItem={({ item, index }) => _renderItem(item, index)}
       />
       <NavigationContainer>
         <ViewCentered>
@@ -160,6 +151,14 @@ const TextWrapper = styled.Text<{ offsetBottom?: boolean }>`
 
 const ViewCentered = styled.View`
   align-items: center;
+`;
+
+const MotiViewContainer = styled(MotiView)`
+  margin-right: ${_spacing}px;
+  padding: ${_spacing}px;
+  border-width: 2px;
+  border-color: ${_colors.active};
+  border-radius: 12px;
 `;
 
 export default ScrollAnimatedList;

@@ -107,7 +107,7 @@ const Section = ({
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollY = event.nativeEvent.contentOffset.y;
-    const isActive = scrollY > 50;
+    const isActive = scrollY > 20;
     const inActive = scrollPosition.current > scrollY;
 
     if (isActive && setIsAnimatedHeader) {

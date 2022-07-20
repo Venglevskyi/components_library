@@ -30,7 +30,7 @@ const Notifications = () => {
       </ReanimatedComponent>
       <Section
         isScrolled
-        offsetTop={IS_IOS ? 50 : 30}
+        clientTop={IS_IOS ? 50 : 30}
         centerContentHorizontally
         setIsAnimatedHeader={setIsAnimatedHeader}>
         <Text>Notifications</Text>
